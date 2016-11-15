@@ -62,12 +62,43 @@ $('.form-horizontal').on('submit', function(e){
   };
 });
 
+
+
 $('#albums').on('click', '.add-song', function(e) {
-    console.log('asdfasdfasdf');
-    var id= $(this).parents('.album').data('album-id');
-    $('#songModal').modal(); // "5665ff1678209c64e51b4e7b"
-    console.log('id',id);
+    var id= $(this).closest('.album').data('album-id');
+    $('#songModal').data('album-id', id);
+    $('#songModal').modal();
+    $('#saveSong').on('click', function(e){
+      console.log('save clicked');
+      e.preventDefault();
+      var modalData = {
+        id: id,
+        name: $('#songName').val(),
+        trackNumber: $('#trackNumber').val()
+      }
+      $.ajax({
+        method: 'POST',
+        url: 'api/albums/'+ id + "/song",
+        data: modalData,
+        success: newSongSucc,
+        error: newSongErr
+      })
+      function newSongErr(err){
+        console.error(err);
+      }
+      function newSongSucc(json){
+        $('.form-control').val('');
+        $('#songModal').modal('toggle')
+        console.log(json);
+        // $('.album').find("[data-album-id='" + id + "']").remove();
+        renderAlbum(json);
+      }
+    });
 });
+
+
+
+
 
 });
 
