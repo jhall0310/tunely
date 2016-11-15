@@ -6,39 +6,61 @@
  */
 
 
-/* hard-coded data! */
-var sampleAlbums = [];
-sampleAlbums.push({
-             artistName: 'Ladyhawke',
-             name: 'Ladyhawke',
-             releaseDate: '2008, November 18',
-             genres: [ 'new wave', 'indie rock', 'synth pop' ]
-           });
-sampleAlbums.push({
-             artistName: 'The Knife',
-             name: 'Silent Shout',
-             releaseDate: '2006, February 17',
-             genres: [ 'synth pop', 'electronica', 'experimental' ]
-           });
-sampleAlbums.push({
-             artistName: 'Juno Reactor',
-             name: 'Shango',
-             releaseDate: '2000, October 9',
-             genres: [ 'electronic', 'goa trance', 'tribal house' ]
-           });
-sampleAlbums.push({
-             artistName: 'Philip Wesley',
-             name: 'Dark Night of the Soul',
-             releaseDate: '2008, September 12',
-             genres: [ 'piano' ]
-           });
-/* end of hard-coded data */
-
-
 
 
 $(document).ready(function() {
   console.log('app.js loaded!');
+
+  var hb = Handlebars;
+  var albumSource = $('#album-template').html();
+  var albumTemplate = hb.compile(albumSource);
+
+
+
+  function renderAlbum(album) {
+    var albumHtml = albumTemplate(album);
+  	$('#albums').append(albumHtml);
+2
+  }
+
+  $.ajax({
+    method: 'GET',
+    url: '/api/albums',
+    success: getAlbumSucc,
+    error: getAlbumErr
+  });
+  function getAlbumErr(error){
+    console.error(error);
+  }
+
+  function getAlbumSucc(json){
+    json.forEach(function(ele){
+    renderAlbum(ele);
+  })
+};
+
+$('.form-horizontal').on('submit', function(e){
+  e.preventDefault();
+
+  var albumData = $(this).serialize();
+  console.log(albumData);
+  $.ajax({
+    method: 'POST',
+    url: '/api/albums',
+    data: albumData,
+    success: createSucc,
+    error: createErr
+  });
+  function createErr(error){
+    console.error(error);
+  }
+
+  function createSucc(album){
+    $('.clear').val('');
+    renderAlbum(album);
+  };
+});
+
 });
 
 
@@ -46,7 +68,3 @@ $(document).ready(function() {
 
 
 // this function takes a single album and renders it to the page
-function renderAlbum(album) {
-  console.log('rendering album:', album);
-
-}
