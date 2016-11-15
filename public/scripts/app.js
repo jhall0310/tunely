@@ -20,7 +20,8 @@ $(document).ready(function() {
   function renderAlbum(album) {
     var albumHtml = albumTemplate(album);
   	$('#albums').append(albumHtml);
-2
+
+
   }
 
   $.ajax({
@@ -59,6 +60,13 @@ $('.form-horizontal').on('submit', function(e){
     $('.clear').val('');
     renderAlbum(album);
   };
+});
+
+$('#albums').on('click', '.add-song', function(e) {
+    console.log('asdfasdfasdf');
+    var id= $(this).parents('.album').data('album-id');
+    $('#songModal').modal(); // "5665ff1678209c64e51b4e7b"
+    console.log('id',id);
 });
 
 });

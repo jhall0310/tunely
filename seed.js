@@ -63,11 +63,14 @@ sampleSongs.push({
 	trackNumber: 7
 });
 
+albumsList.forEach(function(album) {
+  album.song = sampleSongs;
+});
 
 
-db.Albums.remove({}, function(err, albums) {
+db.Album.remove({}, function(err, albums) {
 
-	db.Albums.create(albumsList, function(err, albums) {
+	db.Album.create(albumsList, function(err, albums) {
 		if (err) {
 			return console.log('ERROR', err);
 		}

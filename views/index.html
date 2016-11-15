@@ -123,7 +123,7 @@
 
             <!-- one album -->
             <script id="album-template" type="text/x-handlebars-template">
-                <div class="row album">
+                <div class="row album" data-album-id={{_id}}>
 
                     <div class="col-md-10 col-md-offset-1">
                         <div class="panel panel-default">
@@ -156,13 +156,20 @@
                                                 <h4 class='inline-header'>Genre:</h4>
                                                 <span class='album-genre'>{{genres}}</span>
                                             </li>
+                                            <li class="list-group-item">
+                                              <h4 class="inline-header">Songs:</h4>
+                                                 {{#each song}}   <p>Name: {{name}}; Track Number: {{trackNumber}}{{/each}}</p>
+                                              </li>
                                         </ul>
                                     </div>
                                 </div>
 
                                 <!-- end of album internal row -->
 
+
+
                                 <div class='panel-footer'>
+                                  <button class='btn btn-primary add-song'>Add Song</button>
                                 </div>
 
                             </div>
